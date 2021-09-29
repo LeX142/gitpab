@@ -33,13 +33,9 @@ if [ ! -f  /var/www/html/.env ]; then
   /root/wait-for-it.sh db:5432 --timeout=180 -- echo "PostgreSQL started"
   init_project
   setup_db
+  log "Start first time importing... Waiting...(20-30 minutes)"
+  load_data
 fi
-
-#load_data
-
-#log "Start cron"
-#printenv | sed 's/^\(.*\)$/export \1/g' | grep -E "^export GITLAB" > /root/project_env.sh
-#service cron start
 
 log "Start php-fpm"
 php-fpm -F

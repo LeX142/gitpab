@@ -93,4 +93,5 @@ return [
     'of' => 'of',
     'Logout' => 'Logout',
     'Act t&m/labels CSV' => 'Act t&m/labels CSV',
+    'Import'=>'Import data from Gitlab'
 ];

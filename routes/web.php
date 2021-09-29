@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IssueController;
@@ -36,6 +37,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth', 'route_permission']], function () {
 
     Route::get('/home', '\\' . HomeController::class . '@index')->name('home');
+    Route::get('/import', '\\' . ImportController::class . '@all')->name('import');
 
     Route::resource('project', '\\' . ProjectController::class);
     Route::resource('milestone', '\\' . MilestoneController::class);

@@ -338,6 +338,12 @@ return [
             'icon_color' => 'gray',
             'url'        => 'user',
         ],
+        [
+            'text'       => 'messages.Import',
+            'icon'       => 'ion ion-person',
+            'icon_color' => 'yellow',
+            'url'        => 'import',
+        ],
     ],
 
     /*
