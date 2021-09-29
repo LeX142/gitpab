@@ -4,8 +4,8 @@ namespace App\Model\Service\Gitlab;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Collection;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class GitlabServiceAbstract
@@ -40,8 +40,9 @@ abstract class GitlabServiceAbstract
     abstract protected function getItemUrl(): string;
 
     /**
-     * @param string[] $urlParameters Key-value
-     * @param string[] $requestParameters Key-value
+     * @param  string[]  $urlParameters      Key-value
+     * @param  string[]  $requestParameters  Key-value
+     *
      * @return Collection
      */
     public function getList(array $urlParameters = [], array $requestParameters = []): Collection
@@ -58,13 +59,12 @@ abstract class GitlabServiceAbstract
 
         do {
             $requestParameters['page'] = $currentPage;
+            $requestParameters['perPage'] = $requestParameters['perPage'] ?? $this->perPageDefault;
             $parts = $this->prepareRequestParameters($requestParameters);
-            $url = $baseUrl . '?' . implode('&', $parts);
-
+            $url = $baseUrl . '?' . $parts;
             try {
                 $response = $this->client->get($url);
-            }
-            catch (ClientException $e) {
+            } catch (ClientException $e) {
                 // #12 Try to get Data from Group of project without group
                 if ($e->getCode() == Response::HTTP_NOT_FOUND) {
                     return $data;
@@ -76,9 +76,18 @@ abstract class GitlabServiceAbstract
             $items = json_decode($content, true);
             $data = $data->merge($items);
 
+            if (!empty($items)) {
+                if (is_array($items)) {
+                    if (count($items) < $requestParameters['perPage']){
+                        break;
+                    }
+                } elseif ($items->count() < $requestParameters['perPage']) {
+                    break;
+                }
+            }
+
             $currentPage++;
-        }
-        while (!empty($items) && !$page);
+        } while (!empty($items) && !$page);
 
         return $data;
     }
@@ -89,21 +98,16 @@ abstract class GitlabServiceAbstract
     }
 
     /**
-     * @param array $requestParameters
-     * @return array
+     * @param  array  $requestParameters
+     *
+     * @return string
      */
-    protected function prepareRequestParameters(array $requestParameters): array
+    protected function prepareRequestParameters(array $requestParameters): string
     {
         $requestParameters['private_token'] = $requestParameters['private_token'] ?? $this->token;
         $requestParameters['per_page'] = $requestParameters['per_page'] ?? $this->perPageDefault;
         $requestParameters['order_by'] = $requestParameters['order_by'] ?? 'updated_at';
-
-        $parts = [];
-        foreach ($requestParameters as $key => $value) {
-            $parts[] = $key . '=' . $value;
-        }
-
-        return $parts;
+        return http_build_query($requestParameters);
     }
 
 }

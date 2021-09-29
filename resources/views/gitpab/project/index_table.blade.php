@@ -28,6 +28,12 @@ unset($orderLinkParams['submit']);
         ])
 
         @include('partial.table.thcell', [
+            'column' => 'namespace',
+            'label' => __('messages.Namespace'),
+        ])
+
+
+        @include('partial.table.thcell', [
             'column' => 'estimate',
             'label' => __('messages.Estimate'),
         ])
@@ -59,18 +65,21 @@ unset($orderLinkParams['submit']);
                     {{ (isset($columnTitleName)) ? $item->{$columnTitleName} : $item->title }}
                 </a>
             </td>
+            <td class="col-md-1">
+                {{ $item->namespace_name }}
+            </td>
             <td class="col-md-2">
                 {{ $item->estimate }}
             </td>
-            <td class="col-md-2">
+            <td class="col-md-1">
                 {{ $item->spent }}
             </td>
             @if (\Illuminate\Support\Facades\Auth::user()->hasPermissionTo(\App\User::PERMISSION_PROJECT_FINANCES))
-                <td class="col-md-2">
+                <td class="col-md-1">
                     {{ $item->amount }}
                 </td>
             @endif
-            <td class="col-md-2">
+            <td class="col-md-1">
                 {{ \App\Helper\Date::formatDateTime($item->gitlab_created_at) }}
             </td>
         </tr>

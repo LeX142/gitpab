@@ -99,6 +99,7 @@ class UpdateService
             $requestParameters = [];
             if (!$full) {
                 $updatedAtFrom = $this->issueEloquentService->getLastUpdateAt($project['id']);
+                $updatedAtFrom = date("c",strtotime($updatedAtFrom));
                 if ($updatedAtFrom) {
                     $requestParameters['updated_after'] = $updatedAtFrom;
                 }

@@ -45,7 +45,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-group">
                 @include('partial.form.element.select', [
                     'name' => 'labels[]',
@@ -67,6 +67,18 @@
                 ])
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                @include('partial.form.element.select', [
+                    'name' => 'namespaces[]',
+                    'list' => $namespaceList,
+                    'selected' => $request->input('namespaces'),
+                    'options' => ['multiple' => 'multiple'],
+                    'label' => __('messages.Namespace'),
+                ])
+            </div>
+        </div>
+
         <div class="col-md-2">
             <div class="form-group">
                 @include('partial.form.element.date_range', [

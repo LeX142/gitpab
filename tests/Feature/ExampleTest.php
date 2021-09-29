@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use Symfony\Component\HttpFoundation\Response;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
@@ -13,10 +12,10 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_example()
     {
         $response = $this->get('/');
 
-        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertStatus(200);
     }
 }

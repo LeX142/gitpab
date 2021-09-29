@@ -106,7 +106,7 @@ unset($orderLinkParams['submit']);
                     <span class="label label-primary">{{ $label }}</span>
                 @endforeach
             </td>
-            <td class="col-md-2">
+            <td class="col-md-1">
                 {{ $item->assignee->name ?? null }}
             </td>
             <td class="col-md-1">

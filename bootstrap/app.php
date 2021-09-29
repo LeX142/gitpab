@@ -11,8 +11,11 @@
 |
 */
 
+ini_set('memory_limit','1G');
+set_time_limit(0);
+
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*

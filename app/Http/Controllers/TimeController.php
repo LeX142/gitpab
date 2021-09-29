@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormRequest;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TimeListRequest;
+use App\Model\Repository\NamespacesRepositoryEloquent;
 use App\Model\Repository\ContributorRepositoryEloquent;
 use App\Model\Repository\LabelRepositoryEloquent;
 use App\Model\Repository\MilestoneRepositoryEloquent;
@@ -27,6 +29,7 @@ class TimeController extends CrudController
 
     public function index(FormRequest $request)
     {
+
         if ($request->get('submit') === 'act_tnm.csv') {
             $data = $this->getService()->getTNMList($request->all());
             return $this->downloadCsv($data);
@@ -52,6 +55,9 @@ class TimeController extends CrudController
         /** @var MilestoneRepositoryEloquent $milestoneRepository */
         $milestoneRepository = app(AppServiceProvider::MILESTONE_REPOSITORY);
 
+        /** @var NamespacesRepositoryEloquent $namespacesRepository */
+        $namespacesRepository = app(AppServiceProvider::NAMESPACES_REPOSITORY);
+
         $totalTime = $this->getService()->getTotalTime($request->all());
 
         return array_merge(
@@ -61,6 +67,7 @@ class TimeController extends CrudController
                 'projectsList' => $projectRepository->getItemsForSelect(),
                 'labelList' => $labelRepository->getItemsForSelect(null, null, 'name'),
                 'milestoneList' => $milestoneRepository->getItemsForSelect(null, null, 'id', 'title'),
+                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'name'),
                 'total' => [
                     'time' => $totalTime,
                 ],

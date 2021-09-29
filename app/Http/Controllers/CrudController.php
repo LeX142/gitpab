@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Http\Requests\FormRequest;
 use App\Http\Requests\ListRequest;
 use App\Model\Service\Eloquent\CrudServiceAbstract;
@@ -53,6 +54,7 @@ abstract class CrudController extends Controller
      */
     public function index(FormRequest $request)
     {
+
         if ($request->get('submit') === 'csv') {
             $data = $this->getService()->getCompleteList($request->all());
             return $this->downloadCsv($data);
@@ -339,7 +341,7 @@ abstract class CrudController extends Controller
     {
         if (null === $this->name && preg_match('/(?P<name>[\w]+)Controller$/i', get_class($this), $matches))
         {
-            $this->name = snake_case($matches['name']);
+            $this->name = Str::snake($matches['name']);
         }
 
         return $this->name;

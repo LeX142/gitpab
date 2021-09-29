@@ -34,6 +34,9 @@ class IssueController extends CrudController
         /** @var MilestoneRepositoryEloquent $milestoneRepository */
         $milestoneRepository = app(AppServiceProvider::MILESTONE_REPOSITORY);
 
+        /** @var NamespacesRepositoryEloquent $namespacesRepository */
+        $namespacesRepository = app(AppServiceProvider::NAMESPACES_REPOSITORY);
+
         $totalEstimate = $this->getService()->getTotalEstimate($request->all());
         $totalTime = $this->getService()->getTotalTime($request->all());
 
@@ -44,6 +47,7 @@ class IssueController extends CrudController
                 'projectsList' => $projectRepository->getItemsForSelect(),
                 'labelList' => $labelRepository->getItemsForSelect(null, null, 'name'),
                 'milestoneList' => $milestoneRepository->getItemsForSelect(null, null, 'id', 'title'),
+                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'name'),
                 'total' => [
                     'estimate' => $totalEstimate,
                     'time' => $totalTime,

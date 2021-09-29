@@ -35,7 +35,8 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
             ->join('note', 'note.id', '=', 'spent.note_id')
             ->join('contributor', 'contributor.id', '=', 'note.author_id')
             ->join('issue', 'issue.id', '=', 'note.issue_id')
-            ->join('project', 'project.id', '=', 'issue.project_id');
+            ->join('project', 'project.id', '=', 'issue.project_id')
+            ->join('namespace', 'namespace.id', '=', 'project.namespace_id');
 
         if ($issueId = Arr::get($parameters, 'issue_id'))
         {
@@ -50,6 +51,11 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
         if ($projectIds = Arr::get($parameters, 'projects'))
         {
             $query->whereIn('issue.project_id', $projectIds);
+        }
+
+        if ($namespaceIds = Arr::get($parameters, 'namespaces'))
+        {
+            $query->whereIn('project.namespace_id', $namespaceIds);
         }
 
         if ($authorIds = Arr::get($parameters, 'authors'))

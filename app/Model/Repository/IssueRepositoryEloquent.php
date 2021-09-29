@@ -66,6 +66,12 @@ class IssueRepositoryEloquent extends RepositoryAbstractEloquent
             $query->whereIn('issue.milestone_id', $milestoneIds);
         }
 
+
+        if ($namespaceIds = Arr::get($parameters, 'namespaces'))
+        {
+            $query->whereIn('project.namespace_id', $namespaceIds);
+        }
+
         if ($dateStart = Arr::get($parameters, 'date_start'))
         {
             $date = new \DateTime($dateStart);

@@ -2,11 +2,11 @@
 
 namespace App\Model\Service\Eloquent;
 
-use App\Model\Repository\RepositoryAbstractEloquent;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\Builder;
+use App\Model\Repository\RepositoryAbstractEloquent;
 
 abstract class EloquentServiceAbstract
 {
@@ -40,8 +40,7 @@ abstract class EloquentServiceAbstract
         $order = Arr::get($params, 'order', static::DEFAULT_ORDER_COLUMN);
         $orderDirection = Arr::get($params, 'orderDirection', static::DEFAULT_ORDER_DIRECTION);
 
-        if (!empty($order) && !empty($orderDirection))
-        {
+        if (!empty($order) && !empty($orderDirection)) {
             $query->orderBy($order, $orderDirection);
         }
 
@@ -55,7 +54,8 @@ abstract class EloquentServiceAbstract
     }
 
     /**
-     * @param Collection $list
+     * @param  Collection  $list
+     *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function storeList(Collection $list)
@@ -66,24 +66,24 @@ abstract class EloquentServiceAbstract
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
+     *
      * @return mixed
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(array $attributes)
     {
-        try {
+        $model = $this->repository->getModel();
+        $pkField = $this->repository->getPkFieldName();
+        $exists = !empty($attributes[$pkField]) ?
+            $model->newModelQuery()->where([$pkField => $attributes[$pkField]])->count($pkField) :
+            false;
+        if ($exists > 0) {
+            $model->forceFill($attributes);
+            $model->update();
+            $result = $this->repository->parserResult($model);
+        } else {
             $result = $this->repository->create($attributes);
-        }
-        catch (QueryException  $e) {
-            // Record exists
-            if ($e->getCode() == 23505) {
-                $pk = $this->repository->getPkFieldName();
-                $result = $this->repository->update($attributes, $attributes[$pk]);
-            }
-            else {
-                throw $e;
-            }
         }
         return $result;
     }

@@ -22,7 +22,13 @@ class ProjectRepositoryEloquent extends RepositoryAbstractEloquent
 
     public function getListQuery(array $parameters): Builder
     {
-        $query = parent::getListQuery($parameters);
+        //$query = parent::getListQuery($parameters);
+        $query = parent::getListQuery($parameters)
+            ->select([
+                         'project.*',
+                         DB::raw("namespace.name as namespace_name")
+                     ])
+            ->join('namespace', 'namespace.id', '=', 'project.namespace_id');
 
         // Estimate
         $query->selectSub(function($q) {

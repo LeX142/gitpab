@@ -79,6 +79,17 @@
                 ])
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                @include('partial.form.element.select', [
+                    'name' => 'namespaces[]',
+                    'list' => $namespaceList,
+                    'selected' => $request->input('namespaces'),
+                    'options' => ['multiple' => 'multiple'],
+                    'label' => __('messages.Namespace'),
+                ])
+            </div>
+        </div>
     </div>
 
     <div class="row">
