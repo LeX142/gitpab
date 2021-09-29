@@ -55,7 +55,7 @@ class RolePermissionSeeder extends Seeder
         Artisan::call('cache:clear');
 
         $defaultPermissions =
-            ['home' => 'home'] +
+            ['home' => 'home','import'=>'import'] +
             $this->generatePermissions('project', self::TYPE_VIEW) +
             $this->generatePermissions('milestone', self::TYPE_VIEW) +
             $this->generatePermissions('issue', self::TYPE_VIEW) +
