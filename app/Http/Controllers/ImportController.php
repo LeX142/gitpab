@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormRequest;
-use Illuminate\Support\Facades\Artisan;
-
 class ImportController extends Controller
 {
     public function all()
