@@ -77,9 +77,9 @@ abstract class CrudController extends Controller
         return view($view, $data);
     }
 
-    public function downloadCsv(\Generator $data): BinaryFileResponse
+    public function downloadCsv($data): BinaryFileResponse
     {
-        $filename = tempnam(storage_path('temp'), 'gitpab_');
+        $filename = tempnam('/tmp/', 'gitpab_export_csv_');
         $file = fopen($filename, 'r+');
 
         $isFirstLine = true;
