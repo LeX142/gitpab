@@ -19,7 +19,7 @@ unset($orderLinkParams['submit']);
         ])
 
         @include('partial.table.thcell', [
-            'column' => 'note.created_at',
+            'column' => 'spent.spent_at',
             'label' => __('messages.Spent at'),
             'order' => $order,
             'orderDirection' => $orderDirection,
@@ -63,6 +63,15 @@ unset($orderLinkParams['submit']);
             'orderLinkRoute' => $indexRoute,
             'orderLinkParams' => $orderLinkParams,
         ])
+        @include('partial.table.thcell', [
+            'column' => 'note.created_at',
+            'label' => __('messages.Created At'),
+            'order' => $order,
+            'orderDirection' => $orderDirection,
+            'orderLinkRoute' => $indexRoute,
+            'orderLinkParams' => $orderLinkParams,
+        ])
+
     </tr>
 @endsection
 
@@ -71,7 +80,7 @@ unset($orderLinkParams['submit']);
         <tr>
             <td class="col-md-1">{{ $item->note_id }}</td>
             <td class="col-md-1">
-                {{ \App\Helper\Date::formatDateTime($item->note->gitlab_created_at, 'd.m.Y H:i') }}
+                {{ \App\Helper\Date::formatDateTime($item->spent_at, 'd.m.Y H:i') }}
             </td>
             <td class="col-md-1">{{ $item->hours }}</td>
             <td class="col-md-4">
@@ -89,11 +98,14 @@ unset($orderLinkParams['submit']);
                     <span class="label label-primary">{{ $label }}</span>
                 @endforeach
             </td>
-            <td class="col-md-2">
+            <td class="col-md-1">
                 {{ $item->note->author->name ?? null }}
             </td>
-            <td class="col-md-1">
+            <td class="col-md-2">
                 {{ $item->note->issue->project->name ?? null }}
+            </td>
+            <td class="col-md-1">
+                {{ \App\Helper\Date::formatDateTime($item->note->created_at, 'd.m.Y H:i') }}
             </td>
         </tr>
     @empty

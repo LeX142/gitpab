@@ -71,14 +71,16 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
         if ($dateStart = Arr::get($parameters, 'date_start'))
         {
             $date = new \DateTime($dateStart);
-            $query->where('note.gitlab_created_at', '>=', $date->format('Y-m-d'));
+            //$query->where('note.gitlab_created_at', '>=', $date->format('Y-m-d'));
+            $query->where('spent.spent_at', '>=', $date->format('Y-m-d'));
         }
 
         if ($dateEnd = Arr::get($parameters, 'date_end'))
         {
             $date = new \DateTime($dateEnd);
             $date->add(new \DateInterval('P1D'));
-            $query->where('note.gitlab_created_at', '<', $date->format('Y-m-d'));
+            //$query->where('note.gitlab_created_at', '<', $date->format('Y-m-d'));
+            $query->where('spent.spent_at', '<', $date->format('Y-m-d'));
         }
 
         if ($labels = Arr::get($parameters, 'labels'))

@@ -2,7 +2,7 @@
 @section('formBody')
     {!! Form::open(array('url' => route('time.index'), 'method' => 'get')) !!}
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-1">
             <div class="form-group">
                 @include('partial.form.element.text', [
                     'name' => 'id',
@@ -20,7 +20,7 @@
                 ])
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group">
                 @include('partial.form.element.select', [
                     'name' => 'authors[]',
@@ -28,6 +28,54 @@
                     'selected' => $request->input('authors'),
                     'options' => ['multiple' => 'multiple'],
                     'label' => __('messages.Authors'),
+                ])
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @include('partial.form.element.date_range', [
+                    'name' => 'date_range',
+                    'input' => [
+                        'date_start' => $request->get('date_start'),
+                        'date_end' => $request->get('date_end'),
+                    ],
+                    'label' => __('messages.Spent at'),
+                ])
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                @include('partial.form.element.select', [
+                    'name' => 'labels[]',
+                    'list' => $labelList,
+                    'selected' => $request->input('labels'),
+                    'options' => ['multiple' => 'multiple'],
+                    'label' => __('messages.Labels'),
+                ])
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                @include('partial.form.element.select', [
+                    'name' => 'milestones[]',
+                    'list' => $milestoneList,
+                    'selected' => $request->input('milestones'),
+                    'options' => ['multiple' => 'multiple'],
+                    'label' => __('messages.Milestones'),
+                ])
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                @include('partial.form.element.select', [
+                    'name' => 'namespaces[]',
+                    'list' => $namespaceList,
+                    'selected' => $request->input('namespaces'),
+                    'options' => ['multiple' => 'multiple'],
+                    'label' => __('messages.Namespace'),
                 ])
             </div>
         </div>
@@ -39,54 +87,6 @@
                     'selected' => $request->input('projects'),
                     'options' => ['multiple' => 'multiple'],
                     'label' => __('messages.Projects'),
-                ])
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                @include('partial.form.element.date_range', [
-                    'name' => 'date_range',
-                    'input' => [
-                        'date_start' => $request->get('date_start'),
-                        'date_end' => $request->get('date_end'),
-                    ],
-                    'label' => __('messages.Created At'),
-                ])
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                @include('partial.form.element.select', [
-                    'name' => 'labels[]',
-                    'list' => $labelList,
-                    'selected' => $request->input('labels'),
-                    'options' => ['multiple' => 'multiple'],
-                    'label' => __('messages.Labels'),
-                ])
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                @include('partial.form.element.select', [
-                    'name' => 'milestones[]',
-                    'list' => $milestoneList,
-                    'selected' => $request->input('milestones'),
-                    'options' => ['multiple' => 'multiple'],
-                    'label' => __('messages.Milestones'),
-                ])
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                @include('partial.form.element.select', [
-                    'name' => 'namespaces[]',
-                    'list' => $namespaceList,
-                    'selected' => $request->input('namespaces'),
-                    'options' => ['multiple' => 'multiple'],
-                    'label' => __('messages.Namespace'),
                 ])
             </div>
         </div>

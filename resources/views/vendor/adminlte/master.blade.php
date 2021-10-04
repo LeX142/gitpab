@@ -39,6 +39,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/moment-with-locales.js') }}" rel="stylesheet"></script>
     <script src="{{ asset('js/app.js') }}" rel="stylesheet"></script>
+            <style>
+        body {
+            font-size: 11pt !important;
+        }
+
+
+    </style>
+
 </head>
 <body class="hold-transition @yield('body_class')">
 
