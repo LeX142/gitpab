@@ -105,7 +105,7 @@ unset($orderLinkParams['submit']);
                 {{ $item->note->issue->project->name ?? null }}
             </td>
             <td class="col-md-1">
-                {{ \App\Helper\Date::formatDateTime($item->note->created_at, 'd.m.Y H:i') }}
+                {{ \App\Helper\Date::formatDateTime($item->note->gitlab_created_at, 'd.m.Y H:i') }}
             </td>
         </tr>
     @empty
