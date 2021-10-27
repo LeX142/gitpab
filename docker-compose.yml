@@ -27,9 +27,9 @@ services:
     volumes:
       - gitpab-code:/var/www/html:delegated
     environment:
-      GITLAB_PRIVATE_TOKEN: ${token}
-      GITLAB_RESTRICTIONS_PROJECT_IDS: ${projects}
-      GITLAB_HOST: ${host}
+      GITLAB_PRIVATE_TOKEN: ${GITLAB_PRIVATE_TOKEN}
+      GITLAB_RESTRICTIONS_PROJECT_IDS: ${GITLAB_RESTRICTIONS_PROJECT_IDS}
+      GITLAB_HOST: ${GITLAB_HOST}
       APP_LOCALE: en
     ports:
       - "9999:9000"
@@ -47,9 +47,9 @@ services:
     ports:
       - "15432:5432"
     environment:
-      POSTGRES_DB: gitpab
-      POSTGRES_USER: gitpab
-      POSTGRES_PASSWORD: gitpab
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     networks:
       - panacea-network
 
