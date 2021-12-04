@@ -37,6 +37,7 @@ return [
     'Error on create record' => 'Ошибка при создании записи',
     'Estimate' => 'Оценка',
     'Export CSV' => 'Экспортировать в CSV',
+    'Export XLS project' => 'Экспортировать в XLS по проектам',
     'Finances' => 'Финансы',
     'Home' => 'В начало',
     'Hour rate' => 'Ставка в час',

@@ -48,6 +48,8 @@ $dateEndFieldName = $date_end_field_name ?? 'date_end';
             {
                 ranges: {
                     '@lang('calendar.Today')': [moment(), moment()],
+                    '@lang('calendar.First pay period')': [moment().startOf('month'), moment().startOf('month').add(14,'days')],
+                    '@lang('calendar.Second pay period')': [moment().startOf('month').add(15,'days'), moment().endOf('month')],
                     '@lang('calendar.Yesterday')': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                     '@lang('calendar.Last 7 days')': [moment().subtract(6, 'days'), moment()],
                     '@lang('calendar.Last 30 days')': [moment().subtract(29, 'days'), moment()],

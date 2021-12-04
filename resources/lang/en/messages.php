@@ -37,6 +37,7 @@ return [
     'Error on create record' => 'Error on create record',
     'Estimate' => 'Estimate',
     'Export CSV' => 'Export CSV',
+    'Export XLS project' => 'Export XLS group by project',
     'Finances' => 'Finances',
     'Home' => 'Home',
     'Hour rate' => 'Hour rate',
