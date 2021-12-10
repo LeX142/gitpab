@@ -1,9 +1,7 @@
-version: "3.3"
+version: "3.5"
 
-volumes:
-  gitpab-pgsql: {}
-  gitpab-code: {}
 services:
+
   nginx:
     container_name: gitpab-nginx
     hostname: gitpab-nginx
@@ -14,9 +12,12 @@ services:
     ports:
       - 8888:80
       - 8443:443
+    networks:
+      - panacea-network
     depends_on:
       - php
       - db
+
   php:
     container_name: gitpab-php
     hostname: gitpab-php
@@ -26,14 +27,17 @@ services:
     volumes:
       - gitpab-code:/var/www/html:delegated
     environment:
-      GITLAB_PRIVATE_TOKEN: ${token}
-      GITLAB_RESTRICTIONS_PROJECT_IDS: ${projects}
-      GITLAB_HOST: ${host}
+      GITLAB_PRIVATE_TOKEN: ${GITLAB_PRIVATE_TOKEN}
+      GITLAB_RESTRICTIONS_PROJECT_IDS: ${GITLAB_RESTRICTIONS_PROJECT_IDS}
+      GITLAB_HOST: ${GITLAB_HOST}
       APP_LOCALE: en
     ports:
       - 9999:9000
+    networks:
+      - panacea-network
     depends_on:
       - db
+
   db:
     container_name: gitpab-db
     hostname: gitpab-db
@@ -43,6 +47,18 @@ services:
     ports:
       - 15432:5432
     environment:
-      POSTGRES_DB: gitpab
-      POSTGRES_USER: gitpab
-      POSTGRES_PASSWORD: gitpab
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - panacea-network
+
+volumes:
+
+  gitpab-pgsql: {}
+  gitpab-code: {}
+
+networks:
+
+  panacea-network:
+    name: panacea-network
