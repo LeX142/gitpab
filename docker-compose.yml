@@ -1,9 +1,7 @@
-version: "3.3"
+version: "3.5"
 
-volumes:
-  gitpab-pgsql: {}
-  gitpab-code: {}
 services:
+
   nginx:
     container_name: gitpab-nginx
     hostname: gitpab-nginx
@@ -12,11 +10,14 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - gitpab-code:/var/www/html:delegated
     ports:
-      - 8888:80
-      - 8443:443
+      - "8888:80"
+      - "8443:443"
     depends_on:
       - php
       - db
+    networks:
+      - panacea-network
+
   php:
     container_name: gitpab-php
     hostname: gitpab-php
@@ -26,14 +27,17 @@ services:
     volumes:
       - gitpab-code:/var/www/html:delegated
     environment:
-      GITLAB_PRIVATE_TOKEN: ${token}
-      GITLAB_RESTRICTIONS_PROJECT_IDS: ${projects}
-      GITLAB_HOST: ${host}
+      GITLAB_PRIVATE_TOKEN: ${GITLAB_PRIVATE_TOKEN}
+      GITLAB_RESTRICTIONS_PROJECT_IDS: ${GITLAB_RESTRICTIONS_PROJECT_IDS}
+      GITLAB_HOST: ${GITLAB_HOST}
       APP_LOCALE: en
     ports:
-      - 9999:9000
+      - "9999:9000"
     depends_on:
       - db
+    networks:
+      - panacea-network
+
   db:
     container_name: gitpab-db
     hostname: gitpab-db
@@ -41,8 +45,20 @@ services:
     volumes:
       - gitpab-pgsql:/var/lib/postgresql/data
     ports:
-      - 15432:5432
+      - "15432:5432"
     environment:
-      POSTGRES_DB: gitpab
-      POSTGRES_USER: gitpab
-      POSTGRES_PASSWORD: gitpab
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - panacea-network
+
+volumes:
+
+  gitpab-pgsql: {}
+  gitpab-code: {}
+
+networks:
+
+  panacea-network:
+    name: panacea-network

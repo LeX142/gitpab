@@ -93,12 +93,15 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
         $query = $this->getListQuery($parameters);
         $query = $query->select([
             DB::raw("date_trunc('second', max(spent.spent_at)) as spent_at"),
-            'namespace.name as project',
+            DB::raw("concat(namespace.name, ' | ', project.name) as project"),
             'issue.title as title',
+            'issue.closed_at as closed_at',
             DB::raw('sum(spent.hours) as hours'),
         ])->groupBy([
             'issue.iid',
             'issue.title',
+            'issue.closed_at',
+            'project.name',
             'namespace.name'
         ])->orderBy('issue.iid');
         return $query;

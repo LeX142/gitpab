@@ -18,8 +18,8 @@ class SpentByProjectExports implements FromCollection, WithHeadings, ShouldAutoS
     public function __construct(LazyCollection $data)
     {
         $d = collect($data);
-        $d = $d->push(['','','','']);
-        $d = $d->push(['','','Total',$data->sum('hours')]);
+        $d = $d->push(['','','','','']);
+        $d = $d->push(['','','','Total',$data->sum('hours')]);
         $this->data = $d;
     }
 
@@ -33,6 +33,6 @@ class SpentByProjectExports implements FromCollection, WithHeadings, ShouldAutoS
 
     public function headings(): array
     {
-        return ['Date', 'Project', 'Description', 'Hours'];
+        return ['Date', 'Project', 'Description (issue name)', 'Closed at (issue)','Hours'];
     }
 }
