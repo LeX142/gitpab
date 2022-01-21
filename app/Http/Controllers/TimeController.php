@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Entity\Project;
+use App\Model\Entity\Namespaces;
+use App\Model\Entity\Contributor;
+use App\Model\Service\TimeHelper;
 use App\Http\Requests\FormRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TimeListRequest;
+use App\Exports\SpentByProjectExports;
 use App\Model\Repository\NamespacesRepositoryEloquent;
 use App\Model\Repository\ContributorRepositoryEloquent;
 use App\Model\Repository\LabelRepositoryEloquent;
@@ -30,9 +35,11 @@ class TimeController extends CrudController
     public function index(FormRequest $request)
     {
 
-        if ($request->get('submit') === 'act_tnm.csv') {
-            $data = $this->getService()->getTNMList($request->all());
-            return $this->downloadCsv($data);
+        if ($request->get('submit') === 'xls') {
+            $filters = $request->all();
+            $query = $this->getService()->getTNMList($filters);
+            $fileName = trim(TimeHelper::getFilenameByFilters($filters),'-');
+            return (new SpentByProjectExports($query))->download($fileName.'.xlsx');
         }
         if ($request->get('submit') === 'act_tnm_labels.csv') {
             $data = $this->getService()->getTNMLabelsList($request->all());

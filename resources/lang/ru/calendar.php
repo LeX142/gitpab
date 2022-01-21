@@ -20,6 +20,7 @@ return [
     'Last 30 days' => 'Последние 30 дней',
     'Current month' => 'Текущий месяц',
     'Last month' => 'Последний месяц',
+    'First pay period'=>'1-15 числа месяца',
 
     'From' => 'С',
     'To' => 'По',

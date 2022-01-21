@@ -20,6 +20,8 @@ return [
     'Last 30 days' => 'Last 30 days',
     'Current month' => 'Current month',
     'Last month' => 'Last month',
+    'First pay period'=>'1-15 days of month',
+    'Second pay period'=>'16-31 days of month',
 
     'From' => 'From',
     'To' => 'To',

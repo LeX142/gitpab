@@ -10,11 +10,12 @@ RUN apt-get update -y \
         curl git zip bzip2 wget libmcrypt-dev cron mc \
         libpq-dev libxml2-dev libexif-dev pkg-config \
         libzip-dev libz-dev libbz2-dev libmemcached-dev libtidy-dev \
+        libpng-dev \
     && pecl install -o -f mcrypt \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-configure intl \
     && docker-php-ext-enable mcrypt \
-    && docker-php-ext-install pdo_pgsql zip pcntl intl\
+    && docker-php-ext-install pdo_pgsql zip pcntl intl gd \
     && rm -rf /tmp/pear
 
 RUN touch /var/log/cron.log

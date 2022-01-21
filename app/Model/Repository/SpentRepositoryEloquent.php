@@ -3,10 +3,10 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Spent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class SpentRepositoryEloquent extends RepositoryAbstractEloquent
 {
@@ -38,60 +38,50 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
             ->join('project', 'project.id', '=', 'issue.project_id')
             ->join('namespace', 'namespace.id', '=', 'project.namespace_id');
 
-        if ($issueId = Arr::get($parameters, 'issue_id'))
-        {
+        if ($issueId = Arr::get($parameters, 'issue_id')) {
             $query->where('note.issue_id', '=', $issueId);
         }
 
-        if ($issueIid = Arr::get($parameters, 'issue_iid'))
-        {
+        if ($issueIid = Arr::get($parameters, 'issue_iid')) {
             $query->where('issue.iid', '=', $issueIid);
         }
 
-        if ($projectIds = Arr::get($parameters, 'projects'))
-        {
+        if ($projectIds = Arr::get($parameters, 'projects')) {
             $query->whereIn('issue.project_id', $projectIds);
         }
 
-        if ($namespaceIds = Arr::get($parameters, 'namespaces'))
-        {
+        if ($namespaceIds = Arr::get($parameters, 'namespaces')) {
             $query->whereIn('project.namespace_id', $namespaceIds);
         }
 
-        if ($authorIds = Arr::get($parameters, 'authors'))
-        {
+        if ($authorIds = Arr::get($parameters, 'authors')) {
             $query->whereIn('note.author_id', $authorIds);
         }
 
-        if ($id = Arr::get($parameters, 'id'))
-        {
+        if ($id = Arr::get($parameters, 'id')) {
             $query->where('note.id', '=', $id);
         }
 
-        if ($dateStart = Arr::get($parameters, 'date_start'))
-        {
+        if ($dateStart = Arr::get($parameters, 'date_start')) {
             $date = new \DateTime($dateStart);
             //$query->where('note.gitlab_created_at', '>=', $date->format('Y-m-d'));
             $query->where('spent.spent_at', '>=', $date->format('Y-m-d'));
         }
 
-        if ($dateEnd = Arr::get($parameters, 'date_end'))
-        {
+        if ($dateEnd = Arr::get($parameters, 'date_end')) {
             $date = new \DateTime($dateEnd);
             $date->add(new \DateInterval('P1D'));
             //$query->where('note.gitlab_created_at', '<', $date->format('Y-m-d'));
-            $query->where('spent.spent_at', '<', $date->format('Y-m-d'));
+            $query->where('spent.spent_at', '<=', $date->format('Y-m-d'));
         }
 
-        if ($labels = Arr::get($parameters, 'labels'))
-        {
+        if ($labels = Arr::get($parameters, 'labels')) {
             $labelsString = implode("'::character varying, '", $labels);
             $labelsString = "'$labelsString'::character varying";
             $query->whereRaw("issue.labels @> array[$labelsString]");
         }
 
-        if ($milestoneIds = Arr::get($parameters, 'milestones'))
-        {
+        if ($milestoneIds = Arr::get($parameters, 'milestones')) {
             $query->whereIn('issue.milestone_id', $milestoneIds);
         }
 
@@ -102,16 +92,18 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
     {
         $query = $this->getListQuery($parameters);
         $query = $query->select([
-                DB::raw("date_trunc('second', max(note.gitlab_created_at)) as gitlab_created_at"),
-                'issue.iid as issue',
-                'issue.title as title',
-                DB::raw('sum(spent.hours) as hours'),
-            ])
-            ->groupBy([
-                'issue.iid',
-                'issue.title',
-            ])
-            ->orderBy('issue.iid');
+            DB::raw("date_trunc('second', max(spent.spent_at)) as spent_at"),
+            DB::raw("concat(namespace.name, ' | ', project.name) as project"),
+            'issue.title as title',
+            'issue.closed_at as closed_at',
+            DB::raw('sum(spent.hours) as hours'),
+        ])->groupBy([
+            'issue.iid',
+            'issue.title',
+            'issue.closed_at',
+            'project.name',
+            'namespace.name'
+        ])->orderBy('issue.iid');
         return $query;
     }
 
@@ -138,7 +130,7 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
         }
 
         if ($dateFinish = Arr::get($parameters, 'date_finish')) {
-            $query->where('note.gitlab_created_at', '<', $dateFinish);
+            $query->where('note.gitlab_created_at', '<=', $dateFinish);
         }
 
         if ($userId = Arr::get($parameters, 'user_id')) {
@@ -180,9 +172,9 @@ class SpentRepositoryEloquent extends RepositoryAbstractEloquent
 
         // Translate labels array into table (like join labels)
         $query = $query->select([
-                DB::raw('unnest(issue.labels) as label'),
-                DB::raw('sum(spent.hours) as hours'),
-            ])
+            DB::raw('unnest(issue.labels) as label'),
+            DB::raw('sum(spent.hours) as hours'),
+        ])
             ->groupBy('label');
 
         // Wrap $query to join "label" table for access to description
