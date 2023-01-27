@@ -74,7 +74,7 @@ class TimeController extends CrudController
                 'projectsList' => $projectRepository->getItemsForSelect(),
                 'labelList' => $labelRepository->getItemsForSelect(null, null, 'name'),
                 'milestoneList' => $milestoneRepository->getItemsForSelect(null, null, 'id', 'title'),
-                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'name'),
+                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'full_path'),
                 'total' => [
                     'time' => $totalTime,
                 ],
