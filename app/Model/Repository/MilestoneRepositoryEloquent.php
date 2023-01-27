@@ -41,7 +41,8 @@ class MilestoneRepositoryEloquent extends RepositoryAbstractEloquent
                 ->selectRaw('sum(spent.hours)')
                 ->whereRaw('issue.milestone_id = milestone.id');
         }, 'spent');
-
+        $query->orderBy('milestone.created_at','desc');
+        $query->orderBy('project.path_with_namespace');
         return $query;
     }
 

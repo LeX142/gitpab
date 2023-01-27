@@ -29,7 +29,7 @@ class ProjectController extends CrudController
             $data,
             [
                 'contributorAmountList' => $service->getContributorsAmounts($id),
-                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'name'),
+                'namespaceList' => $namespacesRepository->getItemsForSelect(null, null, 'id', 'full_path'),
             ]
         );
     }

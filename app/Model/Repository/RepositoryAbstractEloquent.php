@@ -29,7 +29,7 @@ abstract class RepositoryAbstractEloquent extends BaseRepository
     {
         if (empty($items))
         {
-            $items = $this->model->all()->pluck($labelField, $valueField)->toArray();
+            $items = $this->model->all()->sortBy($labelField)->pluck($labelField, $valueField)->toArray();
         }
         if (!empty($firstOption) AND is_array($firstOption))
         {

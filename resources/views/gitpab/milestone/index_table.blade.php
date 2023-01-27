@@ -37,7 +37,7 @@ unset($orderLinkParams['submit']);
         ])
 
         @include('partial.table.thcell', [
-            'column' => 'namespace.name',
+            'column' => 'project.path_with_namespace',
             'label' => __('messages.Namespace'),
             'order' => $order,
             'orderDirection' => $orderDirection,
@@ -81,16 +81,16 @@ unset($orderLinkParams['submit']);
             <td class="col-md-1">
                 <a href="{{ $item->web_url }}">{{ $item->iid }}</a>
             </td>
-            <td class="col-md-3">
+            <td class="col-md-1">
                 <a href="{{ route($showRoute, [$item->id]) }}">
                     {{ (isset($columnTitleName)) ? $item->{$columnTitleName} : $item->title }}
                 </a>
             </td>
-            <td class="col-md-1">
-                {{ $item->group->name ?? null }}
+            <td class="col-md-2">
+                {{ $item->project->path_with_namespace ?? $item->group->name ?? null }}
             </td>
             <td class="col-md-2">
-                {{ $item->project->name ?? null }}
+                {{ $item->project->name ?? $item->project->path_with_namespace ?? null }}
             </td>
             <td class="col-md-1">
                 {{ $item->estimate }}

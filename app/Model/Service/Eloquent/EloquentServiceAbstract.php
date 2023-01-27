@@ -31,6 +31,7 @@ abstract class EloquentServiceAbstract
     public function getList(array $parameters)
     {
         $query = $this->repository->getListQuery($parameters);
+        //die(var_dump("".$query->toSql()));
         $this->setQueryOrder($query, $parameters);
         return $this->paginateListQuery($query, Arr::get($parameters, 'limit', static::DEFAULT_LIMIT));
     }

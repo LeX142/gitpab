@@ -18,17 +18,17 @@ unset($orderLinkParams['submit']);
             'orderLinkParams' => $orderLinkParams,
         ])
 
-        @include('partial.table.thcell', [
-            'column' => $columnTitleName,
-            'label' => $columnTitleLabel,
-            'order' => $order,
-            'orderDirection' => $orderDirection,
-            'orderLinkRoute' => $indexRoute,
-            'orderLinkParams' => $orderLinkParams,
-        ])
+{{--        @include('partial.table.thcell', [--}}
+{{--            'column' => $columnTitleName,--}}
+{{--            'label' => $columnTitleLabel,--}}
+{{--            'order' => $order,--}}
+{{--            'orderDirection' => $orderDirection,--}}
+{{--            'orderLinkRoute' => $indexRoute,--}}
+{{--            'orderLinkParams' => $orderLinkParams,--}}
+{{--        ])--}}
 
         @include('partial.table.thcell', [
-            'column' => 'namespace',
+            'column' => 'path_with_namespace',
             'label' => __('messages.Namespace'),
         ])
 
@@ -60,13 +60,15 @@ unset($orderLinkParams['submit']);
     @forelse ($itemsList->items() as $key => $item)
         <tr>
             <td class="col-md-1">{{ $item->id }}</td>
-            <td class="col-md-3">
+{{--            <td class="col-md-3">--}}
+{{--                <a href="{{ route($showRoute, [$item->id]) }}">--}}
+{{--                    {{ (isset($columnTitleName)) ? $item->{$columnTitleName} : $item->title }}--}}
+{{--                </a>--}}
+{{--            </td>--}}
+            <td class="col-md-2">
                 <a href="{{ route($showRoute, [$item->id]) }}">
-                    {{ (isset($columnTitleName)) ? $item->{$columnTitleName} : $item->title }}
+                    {{ $item->path_with_namespace }}
                 </a>
-            </td>
-            <td class="col-md-1">
-                {{ $item->namespace_name }}
             </td>
             <td class="col-md-2">
                 {{ $item->estimate }}
