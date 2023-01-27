@@ -56,13 +56,13 @@ class ProjectRepositoryEloquent extends RepositoryAbstractEloquent
                 ->join('issue', 'issue.id', '=', 'note.issue_id')
                 ->join('contributor_extra', 'contributor_extra.contributor_id', '=', 'note.author_id')
                 ->selectRaw('round(sum(
-                    spent.hours * contributor_extra.hour_rate * 
-                    (100 + contributor_extra.taxes_percent) / 
+                    spent.hours * contributor_extra.hour_rate *
+                    (100 + contributor_extra.taxes_percent) /
                     (100 - contributor_extra.costs_percent)
                 ), 2)')
                 ->whereRaw('issue.project_id = project.id');
         }, 'amount');
-
+        $query->orderBy('project.path_with_namespace');
         return $query;
     }
 
@@ -73,8 +73,8 @@ class ProjectRepositoryEloquent extends RepositoryAbstractEloquent
                 'contributor.name as name',
                 DB::raw('sum(spent.hours) as hours'),
                 DB::raw('round(sum(
-                    spent.hours * contributor_extra.hour_rate * 
-                    (100 + contributor_extra.taxes_percent) / 
+                    spent.hours * contributor_extra.hour_rate *
+                    (100 + contributor_extra.taxes_percent) /
                     (100 - contributor_extra.costs_percent)
                 ), 2) as amount')
             )

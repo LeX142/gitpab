@@ -56,7 +56,7 @@ unset($orderLinkParams['submit']);
         ])
 
         @include('partial.table.thcell', [
-            'column' => 'project.name',
+            'column' => 'project.path_with_namespace',
             'label' => __('messages.Project'),
             'order' => $order,
             'orderDirection' => $orderDirection,
@@ -102,7 +102,7 @@ unset($orderLinkParams['submit']);
                 {{ $item->note->author->name ?? null }}
             </td>
             <td class="col-md-2">
-                {{ $item->note->issue->project->name ?? null }}
+                {{ $item->note->issue->project->path_with_namespace ?? null }}
             </td>
             <td class="col-md-1">
                 {{ \App\Helper\Date::formatDateTime($item->note->gitlab_created_at, 'd.m.Y H:i') }}
